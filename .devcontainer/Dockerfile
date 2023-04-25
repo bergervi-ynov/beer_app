@@ -47,9 +47,9 @@ RUN	groupadd --gid $USER_GID $USERNAME \
 ENV ANDROID_SDK_TOOLS_VERSION=8512546
 ENV ANDROID_PLATFORM_VERSION=33
 ENV ANDROID_BUILD_TOOLS_VERSION=33.0.0
-ENV ANDROID_HOME=home/vscode/android-sdk-linux
-ENV ANDROID_SDK_ROOT="$ANDROID_HOME"
-ENV PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/cmdline-tools/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/emulator
+ENV ANDROID_SDK=home/vscode/android-sdk-Linux
+ENV ANDROID_PATH=$ANDROID_SDK/tools:$ANDROID_SDK/platform-tools
+ENV PATH=${PATH}:${ANDROID_PATH}
 
 #
 # Flutter SDK
@@ -61,31 +61,31 @@ ENV FLUTTER_HOME=/home/vscode/flutter
 ENV PATH=${PATH}:${FLUTTER_HOME}/bin
 
 
-
+USER vscode
 # Android SDK	
 RUN curl -C - --output android-sdk-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS_VERSION}_latest.zip \
 	&& mkdir -p ${ANDROID_HOME}/ \
 	&& unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}/cmdline-tools/ \
 	&& rm android-sdk-tools.zip \
-	&& yes | sdkmanager --licenses \
+	&& yes | sudo sdkmanager --licenses \
 	&& touch $HOME/.android/repositories.cfg \
-	&& sdkmanager platform-tools \
-	&& sdkmanager emulator \
-	&& sdkmanager "platforms;android-${ANDROID_PLATFORM_VERSION}" "build-tools;$ANDROID_BUILD_TOOLS_VERSION" \
-	&& sdkmanager --install "cmdline-tools;latest" 
+	&& sudo sdkmanager platform-tools \
+	&& sudo sdkmanager emulator \
+	&& sudo sdkmanager "platforms;android-${ANDROID_PLATFORM_VERSION}" "build-tools;$ANDROID_BUILD_TOOLS_VERSION" \
+	&& sudo sdkmanager --install "cmdline-tools;latest" 
 # # create emulator android	
-# RUN  sdkmanager "system-images;android-${ANDROID_PLATFORM_VERSION};google_apis;x86_64" \
-# 	 && avdmanager create avd -n Android${ANDROID_PLATFORM_VERSION} -k "system-images;android-${ANDROID_PLATFORM_VERSION};google_apis;x86_64"
+RUN  sdkmanager "system-images;android-${ANDROID_PLATFORM_VERSION};google_apis;x86_64" 
+#&& avdmanager create avd -n Android${ANDROID_PLATFORM_VERSION} -k "system-images;android-${ANDROID_PLATFORM_VERSION};google_apis;x86_64"
 
 
 
-USER vscode
+
 # Flutter SDK
 WORKDIR /home/vscode
 RUN curl -C - --output flutter.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/${FLUTTER_CHANNEL}/linux/flutter_linux_${FLUTTER_VERSION}-${FLUTTER_CHANNEL}.tar.xz 
 RUN	tar -xf flutter.tar.xz -C ./ \
 	&& rm flutter.tar.xz \
-	&& flutter config --android-sdk "${ANDROID_SDK_ROOT}" \
+	&& flutter config --android-sdk "${ANDROID_SDK}" \
 	&& yes | flutter doctor --android-licenses \
 	&& flutter config --no-analytics \
 	&& flutter update-packages
