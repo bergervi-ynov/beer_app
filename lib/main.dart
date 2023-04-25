@@ -10,7 +10,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return
+      MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -109,7 +110,8 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
