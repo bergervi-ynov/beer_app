@@ -7,10 +7,11 @@ class ThemeViewModel extends ChangeNotifier {
   ThemeViewModel(this._themeService);
 
   void changeTheme(BuildContext context) {
-    if (Theme.of(context).brightness == Brightness.light) {
+    if (_themeService.currentTheme.value == ThemeMode.system || _themeService.currentTheme.value == ThemeMode.light) {
       _themeService.setTheme(ThemeMode.dark);
-      return;
     }
-    _themeService.setTheme(ThemeMode.light);
+    else if(_themeService.currentTheme.value == ThemeMode.dark) {
+      _themeService.setTheme(ThemeMode.light);
+    }
   }
 }

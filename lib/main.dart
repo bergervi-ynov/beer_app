@@ -1,7 +1,11 @@
+import "package:beer_app/presentation/screens/screen.settings.dart";
 import "package:beer_app/presentation/viewmodel/viewmodel.theme.dart";
+import "package:flashy_tab_bar2/flashy_tab_bar2.dart";
+import "package:flex_color_scheme/flex_color_scheme.dart";
 import "package:flutter/material.dart";
 import "package:get_it/get_it.dart";
 import "package:provider/provider.dart";
+
 
 import "infrastructure/services/theme.service.dart";
 
@@ -23,37 +27,26 @@ class MyApp extends StatelessWidget {
       builder: (_, ThemeMode theme, __) {
         return MaterialApp(
           title: "Beer App",
-          theme: ThemeData(
-            // This is the theme of your application.
-            //
-            // Try running your application with "flutter run". You'll see the
-            // application has a blue toolbar. Then, without quitting the app, try
-            // changing the primarySwatch below to Colors.green and then invoke
-            // "hot reload" (press "r" in the console where you ran "flutter run",
-            // or simply save your changes to "hot reload" in a Flutter IDE).
-            // Notice that the counter didn't reset back to zero; the application
-            // is not restarted.
-            primarySwatch: Colors.blue,
-          ),
-          darkTheme: ThemeData(primaryColor: Colors.red),
+          theme: FlexThemeData.light(scheme: FlexScheme.damask),
+          darkTheme: FlexThemeData.dark(scheme: FlexScheme.damask),
           themeMode: theme,
-          home: const BottomNavBar(),
+          home: const ServiceInjectionWidget(),
         );
       },
     );
   }
 }
 
-class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({
+class ServiceInjectionWidget extends StatefulWidget {
+  const ServiceInjectionWidget({
     super.key,
   });
 
   @override
-  State<BottomNavBar> createState() => _BottomNavBarState();
+  State<ServiceInjectionWidget> createState() => _ServiceInjectionWidgetState();
 }
 
-class _BottomNavBarState extends State<BottomNavBar> {
+class _ServiceInjectionWidgetState extends State<ServiceInjectionWidget> {
   int currentScreenIndex = 0;
 
   @override
@@ -69,23 +62,54 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 }
 
-class SwitchThemeMode extends StatelessWidget {
+class SwitchThemeMode extends StatefulWidget {
   const SwitchThemeMode({
     super.key,
   });
 
   @override
+  State<SwitchThemeMode> createState() => _SwitchThemeModeState();
+}
+
+class _SwitchThemeModeState extends State<SwitchThemeMode> {
+  int _selectedIndex = 0;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: InkWell(
-        onTap: () {
-          Provider.of<ThemeViewModel>(context).changeTheme(context);
-        },
-        child: Container(
-          color: Theme.of(context).primaryColor,
-          child: const Text("Change color"),
+      body: _selectedIndex == 1 ?
+      const SettingsScreen()
+      : const Scaffold(
+        body: Center(
+          child: Text("Settings"),
         ),
+      ),
+
+      bottomNavigationBar: FlashyTabBar(
+        selectedIndex: _selectedIndex,
+        iconSize: 35,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        onItemSelected: (index) => setState(() {
+          _selectedIndex = index;
+        }),
+        items: [
+          FlashyTabBarItem(
+            icon: Image.asset("assets/beerIcon.png", width: 30, color: Colors.white , ),
+            title: const Text("Beers"),
+            inactiveColor: Colors.white,
+            activeColor: Colors.white,
+          ),
+          FlashyTabBarItem(
+            icon:  const Icon( color: Colors.white, Icons.settings),
+            title: const Text("Settings"),
+            inactiveColor: Colors.white,
+            activeColor: Colors.white
+          ),
+        ],
+
       ),
     );
   }
 }
+
+
