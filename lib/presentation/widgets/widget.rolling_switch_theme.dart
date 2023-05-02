@@ -12,13 +12,13 @@ class RollingSwitchThemeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LiteRollingSwitch(
-      textOn: "Dark",
-      textOff: "Light",
+      textOn: "",
+      textOff: "",
       colorOn: Theme.of(context).colorScheme.primary,
       colorOff: Theme.of(context).colorScheme.primary,
       iconOn: Icons.nightlight,
       iconOff: Icons.light_mode,
-      textSize: 16.0,
+      textSize: 12.0,
       textOnColor: Colors.white,
       onChanged: (bool state) {
         Provider.of<ThemeViewModel>(context, listen: false).changeTheme(context);

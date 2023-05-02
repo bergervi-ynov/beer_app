@@ -1,4 +1,4 @@
-import "package:beer_app/infrastructure/services/theme.service.dart";
+import "package:beer_app/infrastructure/services/service.theme.dart";
 import "package:flutter/material.dart";
 
 class ThemeViewModel extends ChangeNotifier {

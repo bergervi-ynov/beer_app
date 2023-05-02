@@ -1,5 +1,8 @@
+import "package:beer_app/infrastructure/services/service.connectivity.dart";
 import "package:beer_app/presentation/screens/screen.settings.dart";
+import "package:beer_app/presentation/viewmodel/viewmodel.connectivity.dart";
 import "package:beer_app/presentation/viewmodel/viewmodel.theme.dart";
+import "package:beer_app/presentation/widgets/widget.masonry_layout.dart";
 import "package:flashy_tab_bar2/flashy_tab_bar2.dart";
 import "package:flex_color_scheme/flex_color_scheme.dart";
 import "package:flutter/material.dart";
@@ -7,12 +10,14 @@ import "package:get_it/get_it.dart";
 import "package:provider/provider.dart";
 
 
-import "infrastructure/services/theme.service.dart";
+import "infrastructure/services/service.theme.dart";
 
 final getIt = GetIt.instance;
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   getIt.registerSingleton<ThemeService>(
       ThemeService(currentTheme: ValueNotifier(ThemeMode.system)));
+  getIt.registerSingleton<ConnectivityService>(ConnectivityService());
   runApp(const MyApp());
 }
 
@@ -56,6 +61,9 @@ class _ServiceInjectionWidgetState extends State<ServiceInjectionWidget> {
         ChangeNotifierProvider(
           create: (context) => ThemeViewModel(getIt<ThemeService>()),
         ),
+        ChangeNotifierProvider(
+          create: (context) => ConnectivityViewModel(getIt<ConnectivityService>()),
+        ),
       ],
       child: const SwitchThemeMode(),
     );
@@ -75,15 +83,23 @@ class _SwitchThemeModeState extends State<SwitchThemeMode> {
   int _selectedIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    Provider.of<ConnectivityViewModel>(context, listen: false).dispose();
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _selectedIndex == 1 ?
       const SettingsScreen()
-      : const Scaffold(
-        body: Center(
-          child: Text("Settings"),
-        ),
-      ),
+      : const BeerMasonryLayout(),
 
       bottomNavigationBar: FlashyTabBar(
         selectedIndex: _selectedIndex,
