@@ -42,6 +42,10 @@ dependencies:
   lite_rolling_switch: ^1.0.1
   connectivity_plus: ^3.0.6
   flutter_staggered_grid_view: ^0.6.2
+  json_annotation: ^4.8.1
+  dio: ^5.1.1
+  injectable: ^2.1.0
+  retrofit: ^4.0.1
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +57,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  build_runner: ^2.3.3
+  json_serializable: ^6.6.2
+  retrofit_generator: ^5.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

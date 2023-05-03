@@ -30,7 +30,6 @@ linter:
   # producing the lint.
   rules:
     - always_declare_return_types
-    - prefer_double_quotes
     - avoid_empty_else
     - avoid_print
     - avoid_redundant_argument_values

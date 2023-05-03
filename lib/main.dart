@@ -1,6 +1,8 @@
+import "package:beer_app/data/client/dio_client.dart";
 import "package:beer_app/infrastructure/services/service.connectivity.dart";
 import "package:beer_app/presentation/screens/screen.settings.dart";
 import "package:beer_app/presentation/viewmodel/viewmodel.connectivity.dart";
+import "package:beer_app/presentation/viewmodel/viewmodel.grid.dart";
 import "package:beer_app/presentation/viewmodel/viewmodel.theme.dart";
 import "package:beer_app/presentation/widgets/widget.masonry_layout.dart";
 import "package:flashy_tab_bar2/flashy_tab_bar2.dart";
@@ -10,6 +12,7 @@ import "package:get_it/get_it.dart";
 import "package:provider/provider.dart";
 
 
+import "data/endpoints/beers_endpoint.dart";
 import "infrastructure/services/service.theme.dart";
 
 final getIt = GetIt.instance;
@@ -18,6 +21,8 @@ void main() {
   getIt.registerSingleton<ThemeService>(
       ThemeService(currentTheme: ValueNotifier(ThemeMode.system)));
   getIt.registerSingleton<ConnectivityService>(ConnectivityService());
+  getIt.registerFactory(() => DioClient.inject());
+  getIt.registerFactory(() => BeersEndpoint(getIt<DioClient>()));
   runApp(const MyApp());
 }
 
@@ -63,6 +68,9 @@ class _ServiceInjectionWidgetState extends State<ServiceInjectionWidget> {
         ),
         ChangeNotifierProvider(
           create: (context) => ConnectivityViewModel(getIt<ConnectivityService>()),
+        ),
+        ChangeNotifierProvider(
+            create: (context) => GridViewModel(getIt<BeersEndpoint>())
         ),
       ],
       child: const SwitchThemeMode(),

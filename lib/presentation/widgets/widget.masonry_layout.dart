@@ -120,7 +120,7 @@ class _BeerMasonryLayoutState extends State<BeerMasonryLayout> {
               decoration: TextDecoration.underline,
               decorationColor: Theme.of(context).colorScheme.onBackground,
               decorationThickness: 2,
-              shadows: [Shadow(color: Theme.of(context).colorScheme.onBackground,offset: Offset(0, -5))],
+              shadows: [Shadow(color: Theme.of(context).colorScheme.onBackground,offset: const Offset(0, -5))],
             ),
           ),
         ),
