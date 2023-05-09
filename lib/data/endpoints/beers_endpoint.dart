@@ -16,5 +16,5 @@ abstract class BeersEndpoint {
   }
 
   @GET("/beers")
-  Future<List<Beer>> getBeers();
+  Future<List<Beer>> getBeers({@Query('page') int page=1, @Query('per_page') int perPage=50});
 }

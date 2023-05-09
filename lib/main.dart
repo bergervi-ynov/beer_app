@@ -1,10 +1,9 @@
 import "package:beer_app/data/client/dio_client.dart";
 import "package:beer_app/infrastructure/services/service.connectivity.dart";
+import "package:beer_app/presentation/screens/screen.beer.dart";
 import "package:beer_app/presentation/screens/screen.settings.dart";
-import "package:beer_app/presentation/viewmodel/viewmodel.connectivity.dart";
 import "package:beer_app/presentation/viewmodel/viewmodel.grid.dart";
 import "package:beer_app/presentation/viewmodel/viewmodel.theme.dart";
-import "package:beer_app/presentation/widgets/widget.masonry_layout.dart";
 import "package:flashy_tab_bar2/flashy_tab_bar2.dart";
 import "package:flex_color_scheme/flex_color_scheme.dart";
 import "package:flutter/material.dart";
@@ -20,7 +19,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   getIt.registerSingleton<ThemeService>(
       ThemeService(currentTheme: ValueNotifier(ThemeMode.system)));
-  getIt.registerSingleton<ConnectivityService>(ConnectivityService());
+  getIt.registerSingletonAsync(() => ConnectivityService.inject());
   getIt.registerFactory(() => DioClient.inject());
   getIt.registerFactory(() => BeersEndpoint(getIt<DioClient>()));
   runApp(const MyApp());
@@ -67,27 +66,24 @@ class _ServiceInjectionWidgetState extends State<ServiceInjectionWidget> {
           create: (context) => ThemeViewModel(getIt<ThemeService>()),
         ),
         ChangeNotifierProvider(
-          create: (context) => ConnectivityViewModel(getIt<ConnectivityService>()),
-        ),
-        ChangeNotifierProvider(
             create: (context) => GridViewModel(getIt<BeersEndpoint>())
         ),
       ],
-      child: const SwitchThemeMode(),
+      child: const PageSwitchWidget(),
     );
   }
 }
 
-class SwitchThemeMode extends StatefulWidget {
-  const SwitchThemeMode({
+class PageSwitchWidget extends StatefulWidget {
+  const PageSwitchWidget({
     super.key,
   });
 
   @override
-  State<SwitchThemeMode> createState() => _SwitchThemeModeState();
+  State<PageSwitchWidget> createState() => _PageSwitchWidgetState();
 }
 
-class _SwitchThemeModeState extends State<SwitchThemeMode> {
+class _PageSwitchWidgetState extends State<PageSwitchWidget> {
   int _selectedIndex = 0;
 
   @override
@@ -97,7 +93,6 @@ class _SwitchThemeModeState extends State<SwitchThemeMode> {
 
   @override
   void dispose() {
-    Provider.of<ConnectivityViewModel>(context, listen: false).dispose();
     super.dispose();
   }
 
@@ -107,7 +102,7 @@ class _SwitchThemeModeState extends State<SwitchThemeMode> {
     return Scaffold(
       body: _selectedIndex == 1 ?
       const SettingsScreen()
-      : const BeerMasonryLayout(),
+      : const BeerScreen(),
 
       bottomNavigationBar: FlashyTabBar(
         selectedIndex: _selectedIndex,

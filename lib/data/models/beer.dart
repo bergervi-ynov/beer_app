@@ -8,21 +8,21 @@ class Beer {
   final String name;
   final String tagline;
   @JsonKey(name: "first_brewed")
-  final String firstBrewed;
+  final String? firstBrewed;
   final String description;
   @JsonKey(name: "image_url")
   final String imageUrl;
-  final double abv;
-  final double ibu;
+  final double? abv;
+  final double? ibu;
   @JsonKey(name: "target_fg")
   final double targetFg;
   @JsonKey(name: "target_og")
-  final double targetOg;
-  final double ebc;
-  final double srm;
-  final double ph;
+  final double? targetOg;
+  final double? ebc;
+  final double? srm;
+  final double? ph;
   @JsonKey(name: "attenuation_level")
-  final double attenuationLevel;
+  final double? attenuationLevel;
   final Volume volume;
   @JsonKey(name: "boil_volume")
   final Volume boilVolume;
@@ -149,7 +149,7 @@ class Method {
 @JsonSerializable()
 class MashTemp {
   final Temperature temp;
-  final int duration;
+  final int? duration;
 
   MashTemp({required this.temp, required this.duration});
 

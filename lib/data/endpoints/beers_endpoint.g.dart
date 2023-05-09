@@ -19,9 +19,15 @@ class _BeersEndpoint implements BeersEndpoint {
   String? baseUrl;
 
   @override
-  Future<List<Beer>> getBeers() async {
+  Future<List<Beer>> getBeers({
+    page = 1,
+    perPage = 50,
+  }) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'per_page': perPage,
+    };
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result =

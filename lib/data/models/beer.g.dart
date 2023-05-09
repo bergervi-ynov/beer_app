@@ -10,17 +10,17 @@ Beer _$BeerFromJson(Map<String, dynamic> json) => Beer(
       id: json['id'] as int,
       name: json['name'] as String,
       tagline: json['tagline'] as String,
-      firstBrewed: json['first_brewed'] as String,
+      firstBrewed: json['first_brewed'] as String?,
       description: json['description'] as String,
       imageUrl: json['image_url'] as String,
-      abv: (json['abv'] as num).toDouble(),
-      ibu: (json['ibu'] as num).toDouble(),
+      abv: (json['abv'] as num?)?.toDouble(),
+      ibu: (json['ibu'] as num?)?.toDouble(),
       targetFg: (json['target_fg'] as num).toDouble(),
-      targetOg: (json['target_og'] as num).toDouble(),
-      ebc: (json['ebc'] as num).toDouble(),
-      srm: (json['srm'] as num).toDouble(),
-      ph: (json['ph'] as num).toDouble(),
-      attenuationLevel: (json['attenuation_level'] as num).toDouble(),
+      targetOg: (json['target_og'] as num?)?.toDouble(),
+      ebc: (json['ebc'] as num?)?.toDouble(),
+      srm: (json['srm'] as num?)?.toDouble(),
+      ph: (json['ph'] as num?)?.toDouble(),
+      attenuationLevel: (json['attenuation_level'] as num?)?.toDouble(),
       volume: Volume.fromJson(json['volume'] as Map<String, dynamic>),
       boilVolume: Volume.fromJson(json['boil_volume'] as Map<String, dynamic>),
       method: Method.fromJson(json['method'] as Map<String, dynamic>),
@@ -135,7 +135,7 @@ Map<String, dynamic> _$MethodToJson(Method instance) => <String, dynamic>{
 
 MashTemp _$MashTempFromJson(Map<String, dynamic> json) => MashTemp(
       temp: Temperature.fromJson(json['temp'] as Map<String, dynamic>),
-      duration: json['duration'] as int,
+      duration: json['duration'] as int?,
     );
 
 Map<String, dynamic> _$MashTempToJson(MashTemp instance) => <String, dynamic>{

@@ -1,22 +1,20 @@
-import "dart:async";
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:injectable/injectable.dart';
 
-import "package:connectivity_plus/connectivity_plus.dart";
-import "package:flutter/cupertino.dart";
-
+@singleton
 class ConnectivityService {
-  final Connectivity connectivity = Connectivity();
-  late final ValueNotifier<ConnectivityResult> connectionStatusNotifier = ValueNotifier<ConnectivityResult>(ConnectivityResult.none);
+  final bool _isConnected;
 
-  ConnectivityService();
+  ConnectivityService._(this._isConnected);
 
-  Future<ConnectivityResult> initConnectivity() async {
-    late ConnectivityResult result;
-    try {
-      result = await connectivity.checkConnectivity();
-    } catch (e) {
-      throw Exception("Connectivity check failed");
-    }
-    return result;
+  bool get isConnected => _isConnected;
+
+  @factoryMethod
+  static Future<ConnectivityService> inject() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+
+    return ConnectivityService._(
+        connectivityResult == ConnectivityResult.wifi ||
+            connectivityResult == ConnectivityResult.mobile);
   }
-
 }
