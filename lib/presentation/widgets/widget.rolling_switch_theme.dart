@@ -26,6 +26,7 @@ class RollingSwitchThemeWidget extends StatelessWidget {
       onTap: (){},
       onDoubleTap: (){},
       onSwipe: (){},
+      value: Theme.of(context).brightness == Brightness.dark ? true : false,
     );
   }
 }

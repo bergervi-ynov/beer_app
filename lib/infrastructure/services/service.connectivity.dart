@@ -15,6 +15,7 @@ class ConnectivityService {
 
     return ConnectivityService._(
         connectivityResult == ConnectivityResult.wifi ||
-            connectivityResult == ConnectivityResult.mobile);
+            connectivityResult == ConnectivityResult.mobile ||
+      connectivityResult == ConnectivityResult.ethernet);
   }
 }

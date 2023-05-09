@@ -1,5 +1,6 @@
 import "package:beer_app/data/client/dio_client.dart";
 import "package:beer_app/infrastructure/services/service.connectivity.dart";
+import "package:beer_app/infrastructure/services/service.storage.dart";
 import "package:beer_app/presentation/screens/screen.beer.dart";
 import "package:beer_app/presentation/screens/screen.settings.dart";
 import "package:beer_app/presentation/viewmodel/viewmodel.grid.dart";
@@ -15,13 +16,15 @@ import "data/endpoints/beers_endpoint.dart";
 import "infrastructure/services/service.theme.dart";
 
 final getIt = GetIt.instance;
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   getIt.registerSingleton<ThemeService>(
       ThemeService(currentTheme: ValueNotifier(ThemeMode.system)));
+  getIt.registerSingletonAsync(() => StorageService.inject());
   getIt.registerSingletonAsync(() => ConnectivityService.inject());
   getIt.registerFactory(() => DioClient.inject());
   getIt.registerFactory(() => BeersEndpoint(getIt<DioClient>()));
+  await getIt.allReady();
   runApp(const MyApp());
 }
 
@@ -66,7 +69,7 @@ class _ServiceInjectionWidgetState extends State<ServiceInjectionWidget> {
           create: (context) => ThemeViewModel(getIt<ThemeService>()),
         ),
         ChangeNotifierProvider(
-            create: (context) => GridViewModel(getIt<BeersEndpoint>())
+            create: (context) => GridViewModel(getIt<BeersEndpoint>(), getIt<StorageService>())
         ),
       ],
       child: const PageSwitchWidget(),

@@ -153,7 +153,7 @@ Map<String, dynamic> _$FermentationToJson(Fermentation instance) =>
     };
 
 Temperature _$TemperatureFromJson(Map<String, dynamic> json) => Temperature(
-      value: (json['value'] as num).toDouble(),
+      value: (json['value'] as num?)?.toDouble(),
       unit: json['unit'] as String,
     );
 
