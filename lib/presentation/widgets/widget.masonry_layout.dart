@@ -3,9 +3,11 @@ import "package:beer_app/presentation/widgets/widget.details_beer.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:hive/hive.dart";
+import "package:provider/provider.dart";
 import "package:shimmer/shimmer.dart";
 
 import "../../data/models/beer.dart";
+import "../viewmodel/viewmodel.grid.dart";
 
 
 
@@ -31,6 +33,7 @@ class _BeerMasonryLayoutState extends State<BeerMasonryLayout> with AutomaticKee
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SafeArea(
         child: Padding(
             padding: const EdgeInsets.only(right: 16, left: 16),
@@ -46,8 +49,9 @@ class _BeerMasonryLayoutState extends State<BeerMasonryLayout> with AutomaticKee
                         crossAxisSpacing: 14,
                         mainAxisExtent: 300
                     ),
+                    itemCount: widget.isFinalPage ? widget.beers.length : widget.beers.length + 1,
                     itemBuilder: (_,index){
-                      if (index >= widget.beers.length && !widget.isFinalPage){
+                      if (index >= widget.beers.length){
                         return Shimmer.fromColors(
                           baseColor: Theme.of(context).colorScheme.background,
                           highlightColor: Theme.of(context).colorScheme.onBackground,
@@ -68,7 +72,9 @@ class _BeerMasonryLayoutState extends State<BeerMasonryLayout> with AutomaticKee
                       }
 
                       return InkWell(
-                        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => DetailsBeerWidget(beer: widget.beers[index]))),
+                        onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => DetailsBeerWidget(beer: widget.beers[index],)
+                        )),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -107,9 +113,10 @@ class _BeerMasonryLayoutState extends State<BeerMasonryLayout> with AutomaticKee
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  const Icon(
-                                    Icons.favorite_border,
-                                    color: Colors.white,
+                                   Icon(
+                                    widget.beers[index].isFavorite != null && widget.beers[index].isFavorite!
+                                        ? Icons.favorite
+                                        : Icons.favorite_outline
                                   )
                                 ],
                               ),
@@ -122,16 +129,16 @@ class _BeerMasonryLayoutState extends State<BeerMasonryLayout> with AutomaticKee
                   ),
                 ),
                 if (widget.isFinalPage)
-                  const SliverToBoxAdapter(
+                  SliverToBoxAdapter(
                     child: Center(
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: 16),
+                        padding: const EdgeInsets.only(bottom: 16),
                         child: Text(
-                          "No more beer are online !",
+                          "No more beers are online !",
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                               fontWeight: FontWeight.w700,
-                              fontSize: 16),
+                              fontSize: 25),
                         ),
                       ),
                     ),

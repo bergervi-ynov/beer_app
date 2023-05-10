@@ -34,6 +34,8 @@ class Beer {
   final String brewersTips;
   @JsonKey(name: "contributed_by")
   final String contributedBy;
+  @JsonKey(includeFromJson: false)
+  bool? isFavorite = false;
 
   Beer(
       {required this.id,

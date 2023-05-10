@@ -11,6 +11,7 @@ class GridViewModel extends ChangeNotifier{
   final BeersEndpoint beersEndpoint;
   final StorageService storageService;
 
+  List<Beer> beers = <Beer>[];
 
 
   int page = 1;
@@ -23,36 +24,49 @@ class GridViewModel extends ChangeNotifier{
   }
   ValueListenable<Box<Uint8List>> get imageListenable => storageService.favoriteImageListener;
 
-  List<Beer> beers = <Beer>[];
+
   final ScrollController scrollController = ScrollController();
 
   void initScrollListener() {
     scrollController.addListener(() {
+      notifyListeners();
       if (scrollController.position.pixels <=  (scrollController.position.maxScrollExtent * 0.9) && !isFinalPage) {
-        print("Loading more beers");
         loadMoreBeers();
       }
     });
   }
 
+  List<Beer> _mergeLists(List<Beer> list1, List<Beer> list2) {
+    List<Beer> mergedList = List.from(list1);
+
+    for (Beer beer in list2) {
+      if (!mergedList.any((element) => element.id == beer.id)) {
+        mergedList.add(beer);
+      }
+    }
+    return mergedList;
+  }
+
   Future<void> loadBeers() async {
+    final beersSaved = storageService.getFavoriteBeers();
     final response = await beersEndpoint.getBeers(page: page);
-    beers.addAll(response);
+    beers = _mergeLists(beersSaved, response);
     page++;
     loading = false;
     notifyListeners();
   }
 
   Future<void> loadMoreBeers() async {
-    if (!loading && page <= 2){
+    if (!loading && page <= 3){
       loading = true;
       await loadBeers();
       notifyListeners();
+      return;
     }
-    else {
-      isFinalPage = true;
-      notifyListeners();
-    }
+    isFinalPage = true;
   }
+
+
+
 
 }

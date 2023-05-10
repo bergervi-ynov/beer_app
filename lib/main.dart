@@ -42,6 +42,8 @@ class MyApp extends StatelessWidget {
           theme: FlexThemeData.light(scheme: FlexScheme.damask),
           darkTheme: FlexThemeData.dark(scheme: FlexScheme.damask),
           themeMode: theme,
+          //Down debug mode
+          debugShowCheckedModeBanner: false,
           home: const ServiceInjectionWidget(),
         );
       },
