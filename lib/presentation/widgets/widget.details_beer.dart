@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:beer_app/data/models/beer.dart';
 import 'package:beer_app/presentation/viewmodel/viewmodel.detail.dart';
+import 'package:beer_app/presentation/viewmodel/viewmodel.grid.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -42,7 +43,7 @@ class _DetailsContentState extends State<DetailsContent> {
       });
 
       try {
-        final response = await context.read<DetailsViewModel>().handleFavorite();
+        await context.read<DetailsViewModel>().handleFavorite();
 
         setState(() {
           isLoading = false;
@@ -81,6 +82,9 @@ class _DetailsContentState extends State<DetailsContent> {
             icon: isFavorite
                 ? const Icon(Icons.favorite)
                 : const Icon(Icons.favorite_outline),
+            color: isFavorite
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.onSurface,
 
           ),
         ],

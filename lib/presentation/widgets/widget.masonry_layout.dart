@@ -3,11 +3,9 @@ import "package:beer_app/presentation/widgets/widget.details_beer.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:hive/hive.dart";
-import "package:provider/provider.dart";
 import "package:shimmer/shimmer.dart";
 
 import "../../data/models/beer.dart";
-import "../viewmodel/viewmodel.grid.dart";
 
 
 
@@ -117,6 +115,9 @@ class _BeerMasonryLayoutState extends State<BeerMasonryLayout> with AutomaticKee
                                     widget.beers[index].isFavorite != null && widget.beers[index].isFavorite!
                                         ? Icons.favorite
                                         : Icons.favorite_outline
+                                        , color: widget.beers[index].isFavorite != null && widget.beers[index].isFavorite!
+                                       ? Theme.of(context).colorScheme.primary
+                                       : Theme.of(context).colorScheme.onSurface,
                                   )
                                 ],
                               ),
