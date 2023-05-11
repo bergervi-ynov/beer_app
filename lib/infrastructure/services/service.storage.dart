@@ -41,6 +41,7 @@ class StorageService{
     await _favoriteImage.delete(beer.id.toString());
   }
 
+
   List<Beer> getFavoriteBeers() {
     final beers = <Beer>[];
     _favoriteBeer.values.forEach((element) {
