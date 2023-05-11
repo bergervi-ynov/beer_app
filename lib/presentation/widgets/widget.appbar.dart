@@ -1,8 +1,5 @@
-import 'package:beer_app/presentation/viewmodel/viewmodel.grid.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../data/models/beer.dart';
+import 'package:flutter/material.dart';
 
 
 class AppBarBeer extends StatelessWidget with PreferredSizeWidget{
