@@ -106,6 +106,13 @@ class _DetailsContentState extends State<DetailsContent> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text("by ${context.read<DetailsViewModel>().beer.contributedBy}",
+                  style: TextStyle(fontSize: 12.0, color: Theme.of(context).colorScheme.onSurface, fontStyle: FontStyle.italic),
+                )
+            ),
+
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -149,6 +156,7 @@ class _DetailsContentState extends State<DetailsContent> {
             )
           ],
         ),
+
       ),
     );
   }
