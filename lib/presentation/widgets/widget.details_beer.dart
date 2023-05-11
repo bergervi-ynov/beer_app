@@ -132,9 +132,8 @@ class _DetailsContentState extends State<DetailsContent> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  context.read<DetailsViewModel>().beer.tagline,
-                  style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                child: Text( "\"${context.read<DetailsViewModel>().beer.tagline}\"",
+                  style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
                 ),
               ),
             ),

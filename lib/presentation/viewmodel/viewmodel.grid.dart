@@ -19,6 +19,7 @@ class GridViewModel extends ChangeNotifier{
   bool isFinalPage = false;
 
   GridViewModel(this.beersEndpoint, this.storageService){
+    beers.addAll(storageService.getFavoriteBeers());
     loadBeers();
     initScrollListener();
   }
@@ -48,9 +49,8 @@ class GridViewModel extends ChangeNotifier{
   }
 
   Future<void> loadBeers() async {
-    final beersSaved = storageService.getFavoriteBeers();
     final response = await beersEndpoint.getBeers(page: page);
-    beers = _mergeLists(beersSaved, response);
+    beers = _mergeLists(beers, response);
     page++;
     loading = false;
     notifyListeners();
