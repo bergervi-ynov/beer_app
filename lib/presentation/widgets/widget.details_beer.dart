@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:beer_app/data/models/beer.dart';
-import 'package:beer_app/presentation/viewmodel/viewmodel.detail.dart';
+import 'package:beer_app/presentation/viewmodel/viewmodel.details.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
