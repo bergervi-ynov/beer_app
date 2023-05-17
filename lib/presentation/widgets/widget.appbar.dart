@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 
-class AppBarBeer extends StatelessWidget with PreferredSizeWidget{
+class AppBarBeer extends StatelessWidget implements PreferredSizeWidget{
   final String title;
   final bool isNavigation;
   const AppBarBeer({
@@ -26,7 +26,7 @@ class AppBarBeer extends StatelessWidget with PreferredSizeWidget{
           style: TextStyle(
             color: Colors.transparent,
             fontWeight: FontWeight.bold,
-            fontSize: 14,
+            fontSize: 18,
             decoration: TextDecoration.underline,
             decorationColor: Theme.of(context).colorScheme.onSurfaceVariant,
             decorationThickness: 2,

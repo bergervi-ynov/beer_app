@@ -11,7 +11,6 @@ import "package:flutter/material.dart";
 import "package:get_it/get_it.dart";
 import "package:provider/provider.dart";
 
-
 import "data/endpoints/beers_endpoint.dart";
 import "infrastructure/services/service.theme.dart";
 
@@ -71,8 +70,8 @@ class _ServiceInjectionWidgetState extends State<ServiceInjectionWidget> {
           create: (context) => ThemeViewModel(getIt<ThemeService>()),
         ),
         ChangeNotifierProvider(
-            create: (context) => GridViewModel(getIt<BeersEndpoint>(), getIt<StorageService>())
-        ),
+            create: (context) =>
+                GridViewModel(getIt<BeersEndpoint>(), getIt<StorageService>())),
       ],
       child: const PageSwitchWidget(),
     );
@@ -92,48 +91,38 @@ class _PageSwitchWidgetState extends State<PageSwitchWidget> {
   int _selectedIndex = 0;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _selectedIndex == 1 ?
-      const SettingsScreen()
-      : const BeerScreen(),
-
+      body: _selectedIndex == 1 ? const SettingsScreen() : const BeerScreen(),
       bottomNavigationBar: FlashyTabBar(
         selectedIndex: _selectedIndex,
+        shadows: const [
+          BoxShadow(
+            blurRadius: 10,
+          ),],
         iconSize: 35,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
         onItemSelected: (index) => setState(() {
           _selectedIndex = index;
         }),
         items: [
           FlashyTabBarItem(
-            icon: Image.asset("assets/beerIcon.png", width: 30, color: Colors.white , ),
+            icon: Image.asset(
+              "assets/beerIcon.png",
+              width: 30,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
             title: const Text("Beers"),
-            inactiveColor: Colors.white,
-            activeColor: Colors.white,
+            inactiveColor: Theme.of(context).colorScheme.onSurface,
+            activeColor: Theme.of(context).colorScheme.onSurface,
           ),
           FlashyTabBarItem(
-            icon:  const Icon( color: Colors.white, Icons.settings),
-            title: const Text("Settings"),
-            inactiveColor: Colors.white,
-            activeColor: Colors.white
-          ),
+              icon:  Icon(color: Theme.of(context).colorScheme.onSurface, Icons.settings),
+              title: const Text("Settings"),
+              inactiveColor: Theme.of(context).colorScheme.onSurface,
+              activeColor: Theme.of(context).colorScheme.onSurface),
         ],
-
       ),
     );
   }
 }
-
-

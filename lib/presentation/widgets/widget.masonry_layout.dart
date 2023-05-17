@@ -69,61 +69,64 @@ class _BeerMasonryLayoutState extends State<BeerMasonryLayout> with AutomaticKee
                         );
                       }
 
-                      return InkWell(
-                        onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => DetailsBeerWidget(beer: widget.beers[index],)
-                        )),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ValueListenableBuilder<Box<Uint8List>>(
-                              valueListenable: widget.imageListenable ,
-                              builder: (BuildContext context,  Box<Uint8List> value, Widget? child){
-                                return Container(
-                                    height: 250,
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).colorScheme.secondary,
-                                      borderRadius: BorderRadius.circular(16),
-                                      image: DecorationImage(
-                                          image: value.containsKey(
-                                              widget.beers[index].id.toString())
-                                              ? MemoryImage(value
-                                              .get(widget.beers[index].id!.toString())!)
-                                              : NetworkImage(
-                                            widget.beers[index].imageUrl ?? '',
-                                          ) as ImageProvider,
-                                          fit: BoxFit.fitHeight
+                      return Hero(
+                          tag: widget.beers[index],
+                          child: InkWell(
+                            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => DetailsBeerWidget(beer: widget.beers[index],)
+                            )),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ValueListenableBuilder<Box<Uint8List>>(
+                                  valueListenable: widget.imageListenable ,
+                                  builder: (BuildContext context,  Box<Uint8List> value, Widget? child){
+                                    return Container(
+                                        height: 250,
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).colorScheme.secondary,
+                                          borderRadius: BorderRadius.circular(16),
+                                          image: DecorationImage(
+                                              image: value.containsKey(
+                                                  widget.beers[index].id.toString())
+                                                  ? MemoryImage(value
+                                                  .get(widget.beers[index].id!.toString())!)
+                                                  : NetworkImage(
+                                                widget.beers[index].imageUrl ?? '',
+                                              ) as ImageProvider,
+                                              fit: BoxFit.fitHeight
+                                          ),
+                                        )
+                                    );
+                                  },
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          widget.beers[index].name,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w700, fontSize: 14),
+                                          maxLines:2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                    )
-                                );
-                              },
-                            ),
-                            Expanded(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      widget.beers[index].name,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w700, fontSize: 14),
-                                      maxLines:2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                   Icon(
-                                    widget.beers[index].isFavorite != null && widget.beers[index].isFavorite!
-                                        ? Icons.favorite
-                                        : Icons.favorite_outline
+                                      Icon(
+                                        widget.beers[index].isFavorite != null && widget.beers[index].isFavorite!
+                                            ? Icons.favorite
+                                            : Icons.favorite_outline
                                         , color: widget.beers[index].isFavorite != null && widget.beers[index].isFavorite!
-                                       ? Theme.of(context).colorScheme.primary
-                                       : Theme.of(context).colorScheme.onSurface,
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                                          ? Theme.of(context).colorScheme.primary
+                                          : Theme.of(context).colorScheme.onSurface,
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
                       );
 
                     },
